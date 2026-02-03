@@ -6,130 +6,55 @@
     <title>Saber's Dice Vault</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Inter', -apple-system, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0;
+            background-color: #0a0a0a; color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
             background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
         }
-
         .dice-widget {
-            width: 90vw;
-            max-width: 380px;
-            height: 550px;
-            background: #151515;
-            border-radius: 28px;
-            border: 1px solid #333;
+            width: 90vw; max-width: 380px; height: 550px;
+            background: #151515; border-radius: 28px; border: 1px solid #333;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
+            display: flex; flex-direction: column; overflow: hidden; position: relative;
         }
-
-        #canvas-container {
-            flex: 1;
-            width: 100%;
-            background: #000;
-            position: relative;
-        }
-
-        .result-overlay {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            text-align: center;
-            pointer-events: none;
-            z-index: 5;
-        }
-
+        #canvas-container { flex: 1; width: 100%; background: #000; position: relative; }
+        .result-overlay { position: absolute; top: 20px; width: 100%; text-align: center; pointer-events: none; z-index: 5; }
         .total-number {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #00ffcc;
+            font-size: 4rem; font-weight: 900; color: #00ffcc;
             text-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
-            opacity: 0;
-            transform: scale(0.5);
+            opacity: 0; transform: scale(0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .total-number.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-
+        .total-number.show { opacity: 1; transform: scale(1); }
         .controls {
-            background: #1a1a1a;
-            padding: 16px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            border-top: 1px solid #333;
-            z-index: 10;
+            background: #1a1a1a; padding: 16px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            border-top: 1px solid #333; z-index: 10;
         }
-
         .dice-btn {
-            background: #252525;
-            border: 1px solid #333;
-            color: #aaa;
-            padding: 10px 4px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #252525; border: 1px solid #333; color: #aaa;
+            padding: 10px 4px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; display: flex; flex-direction: column; align-items: center;
         }
-
         .dice-btn:active { transform: scale(0.95); }
-
         .roll-btn {
-            grid-column: span 3;
-            background: #00ffcc;
-            color: #000;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 900;
-            font-size: 1rem;
-            margin-top: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
+            grid-column: span 3; background: #00ffcc; color: #000; border: none;
+            padding: 14px; border-radius: 12px; font-weight: 900; font-size: 1rem;
+            margin-top: 4px; cursor: pointer; text-transform: uppercase;
         }
-
         .clear-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #888;
-            font-size: 0.6rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 6;
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.1); border: none; color: #888;
+            font-size: 0.6rem; padding: 5px 10px; border-radius: 20px; cursor: pointer; z-index: 6;
         }
     </style>
 </head>
 <body>
-
     <div class="dice-widget">
-        <div class="result-overlay">
-            <div id="result-total" class="total-number">0</div>
-        </div>
-
-        <div id="canvas-container">
-            <button class="clear-btn" onclick="clearDice()">RESET</button>
-        </div>
-
+        <div class="result-overlay"><div id="result-total" class="total-number">0</div></div>
+        <div id="canvas-container"><button class="clear-btn" onclick="clearDice()">RESET</button></div>
         <div class="controls">
             <button class="dice-btn" onclick="addDice('d4')">D4</button>
             <button class="dice-btn" onclick="addDice('d6')">D6</button>
@@ -149,7 +74,6 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.shadowMap.enabled = true;
         container.appendChild(renderer.domElement);
@@ -158,7 +82,7 @@
         camera.lookAt(0, 0, 0);
 
         scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-        const light = new THREE.DirectionalLight(0xffffff, 0.5);
+        const light = new THREE.DirectionalLight(0xffffff, 0.6);
         light.position.set(5, 10, 2);
         light.castShadow = true;
         scene.add(light);
@@ -169,10 +93,7 @@
 
         const diceMaterial = new CANNON.Material();
         const floorMaterial = new CANNON.Material();
-        const contactMaterial = new CANNON.ContactMaterial(floorMaterial, diceMaterial, {
-            friction: 0.3,
-            restitution: 0.1
-        });
+        const contactMaterial = new CANNON.ContactMaterial(floorMaterial, diceMaterial, { friction: 0.3, restitution: 0.1 });
         world.addContactMaterial(contactMaterial);
 
         const floorBody = new CANNON.Body({ mass: 0, shape: new CANNON.Plane(), material: floorMaterial });
@@ -186,66 +107,58 @@
             if (rotY) body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), rotY);
             world.addBody(body);
         }
-        createWall(3.2, 0, 0, 0, -Math.PI/2);
-        createWall(-3.2, 0, 0, 0, Math.PI/2);
-        createWall(0, 0, 4.5, 0, Math.PI);
-        createWall(0, 0, -4.5, 0, 0);
+        createWall(3.2, 0, 0, 0, -Math.PI/2); createWall(-3.2, 0, 0, 0, Math.PI/2);
+        createWall(0, 0, 4.5, 0, Math.PI); createWall(0, 0, -4.5, 0, 0);
 
         const diceList = [];
         const colors = [0x00ffcc, 0xff0066, 0x7000ff, 0xffcc00];
 
-        // --- Texture Generation for Numbers ---
         function createDiceTexture(number, color) {
             const canvas = document.createElement('canvas');
-            canvas.width = 128;
-            canvas.height = 128;
+            canvas.width = 128; canvas.height = 128;
             const ctx = canvas.getContext('2d');
-            
-            // Background
             ctx.fillStyle = '#' + color.toString(16).padStart(6, '0');
             ctx.fillRect(0, 0, 128, 128);
-            
-            // Text
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 70px Inter, Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
+            ctx.font = 'bold 80px Inter, Arial';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText(number, 64, 64);
-            
             const texture = new THREE.CanvasTexture(canvas);
             return new THREE.MeshPhongMaterial({ map: texture, flatShading: true });
         }
 
-        function createDiceGeometry(type) {
+        function getDiceParams(type) {
             switch(type) {
-                case 'd4': return new THREE.TetrahedronGeometry(1);
-                case 'd6': return new THREE.BoxGeometry(1.2, 1.2, 1.2);
-                case 'd8': return new THREE.OctahedronGeometry(1.1);
-                case 'd10': return new THREE.IcosahedronGeometry(1.1, 0); 
-                case 'd12': return new THREE.DodecahedronGeometry(1.1);
-                case 'd20': return new THREE.IcosahedronGeometry(1.2);
+                case 'd4': return { geom: new THREE.TetrahedronGeometry(1.1), sides: 4 };
+                case 'd6': return { geom: new THREE.BoxGeometry(1.2, 1.2, 1.2), sides: 6 };
+                case 'd8': return { geom: new THREE.OctahedronGeometry(1.1), sides: 8 };
+                case 'd10': return { geom: new THREE.IcosahedronGeometry(1.1, 0), sides: 10 }; 
+                case 'd12': return { geom: new THREE.DodecahedronGeometry(1.1), sides: 12 };
+                case 'd20': return { geom: new THREE.IcosahedronGeometry(1.2), sides: 20 };
             }
         }
 
         function addDice(type) {
             if (diceList.length >= 8) return;
-            
             const color = colors[Math.floor(Math.random() * colors.length)];
-            const geometry = createDiceGeometry(type);
-            let mesh;
-
-            if (type === 'd6') {
-                // For D6 we can easily map numbers to faces
-                const materials = [];
-                for (let i = 1; i <= 6; i++) {
-                    materials.push(createDiceTexture(i, color));
-                }
-                mesh = new THREE.Mesh(geometry, materials);
-            } else {
-                // For other polyhedrals, simplified mapping for now
-                mesh = new THREE.Mesh(geometry, createDiceTexture('?', color));
+            const params = getDiceParams(type);
+            const geometry = params.geom;
+            
+            // To ensure every face has a texture, we map a material to every face index
+            const materials = [];
+            const faceCount = geometry.attributes.position.count / 3;
+            for (let i = 0; i < faceCount; i++) {
+                // Simplified: give each face a number from 1 to 'sides'
+                materials.push(createDiceTexture((i % params.sides) + 1, color));
             }
             
+            // Re-map group indices so Three.js knows which triangle uses which material
+            geometry.clearGroups();
+            for (let i = 0; i < faceCount; i++) {
+                geometry.addGroup(i * 3, 3, i);
+            }
+
+            const mesh = new THREE.Mesh(geometry, materials);
             mesh.castShadow = true;
             scene.add(mesh);
 
@@ -255,30 +168,59 @@
 
             const body = new CANNON.Body({ mass: 1, shape: shape, material: diceMaterial });
             body.position.set(Math.random()-0.5, 4, Math.random()-0.5);
-            body.linearDamping = 0.5;
-            body.angularDamping = 0.5;
+            body.linearDamping = 0.4; body.angularDamping = 0.4;
             world.addBody(body);
-            diceList.push({ mesh, body, type });
+            diceList.push({ mesh, body, type, sides: params.sides });
+        }
+
+        function getUpwardFace(mesh) {
+            const vector = new THREE.Vector3(0, 1, 0); // World Up
+            let maxDot = -1;
+            let bestFaceIndex = 0;
+
+            const normalMatrix = new THREE.Matrix3().getNormalMatrix(mesh.matrixWorld);
+            const position = mesh.geometry.attributes.position;
+
+            // Check each face normal
+            for (let i = 0; i < position.count; i += 3) {
+                const vA = new THREE.Vector3().fromBufferAttribute(position, i);
+                const vB = new THREE.Vector3().fromBufferAttribute(position, i+1);
+                const vC = new THREE.Vector3().fromBufferAttribute(position, i+2);
+                
+                const cb = new THREE.Vector3().subVectors(vC, vB);
+                const ab = new THREE.Vector3().subVectors(vA, vB);
+                const normal = cb.cross(ab).normalize().applyMatrix3(normalMatrix);
+
+                const dot = normal.dot(vector);
+                if (dot > maxDot) {
+                    maxDot = dot;
+                    bestFaceIndex = i / 3;
+                }
+            }
+            // Return the number assigned to that face material
+            return (bestFaceIndex % mesh.userData.sides) + 1;
         }
 
         function rollAll() {
             if (diceList.length === 0) return;
             document.getElementById('result-total').classList.remove('show');
             diceList.forEach(dice => {
+                dice.mesh.userData.sides = dice.sides; // Store for face detection
                 dice.body.wakeUp();
                 dice.body.position.set(Math.random()-0.5, 5, Math.random()-0.5);
-                dice.body.velocity.set((Math.random()-0.5)*12, -10, (Math.random()-0.5)*12);
-                dice.body.angularVelocity.set(Math.random()*20, Math.random()*20, Math.random()*20);
+                dice.body.velocity.set((Math.random()-0.5)*15, -12, (Math.random()-0.5)*15);
+                dice.body.angularVelocity.set(Math.random()*25, Math.random()*25, Math.random()*25);
             });
+
             setTimeout(() => {
                 let total = 0;
                 diceList.forEach(dice => {
-                    total += Math.floor(Math.random() * parseInt(dice.type.substring(1))) + 1;
+                    total += getUpwardFace(dice.mesh);
                 });
                 const el = document.getElementById('result-total');
                 el.innerText = total;
                 el.classList.add('show');
-            }, 1000);
+            }, 1500);
         }
 
         function clearDice() {
